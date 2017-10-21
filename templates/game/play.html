@@ -1,0 +1,41 @@
+{% extends "./base.html" %}
+
+{% load static %}
+
+{% block js %}
+    <script src="{% static 'game/js/game.controller.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="game" ng-controller="GameController as gameCtrl">
+        <div class="start-game" ng-show="!gameCtrl.campaignId">
+            <button ng-repeat="campaign in gameCtrl.campaigns"
+                    ng-click="gameCtrl.startGame(campaign)" ng-bind="campaign.season"></button>
+        </div>
+
+        <div class="deck">
+            <div class="city-group">
+                <div class="city-group__city" ng-repeat="city in gameCtrl.cities">
+                    <div class="city-group__city__icon" ng-bind="city.color"></div>
+                    <div class="city-group__city__name" ng-bind="city.name"></div>
+                </div>
+            </div>
+        </div>
+        <div class="discard-pile">
+            <div class="city-group">
+                <div class="city-group__city" ng-bind="">
+                    <div class="city-group__city__icon"></div>
+                    <div class="city-group__city__name"></div>
+                </div>
+            </div>
+        </div>
+        <div class="discard-pile">
+            <div class="city-group">
+                <div class="city-group__city" ng-bind="">
+                    <div class="city-group__city__icon"></div>
+                    <div class="city-group__city__name"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "./base.html" %}
+
+{% block content %}
+    <div class="home">
+        <div class="home__title">Pandemic Legacy Tracker</div>
+        <div class="home__description">Predict the next city to be breakout in your game</div>
+        <div class="home__buttons">
+            <a href="{% url 'game:play' %}">Start Game</a>
+            <a href="">About</a>
+        </div>
+        <div class="home__about">&copy; Paul Armer 2017</div>
+    </div>
+{% endblock %}
