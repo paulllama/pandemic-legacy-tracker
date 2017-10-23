@@ -47,6 +47,9 @@ class Campaign(models.Model):
     season = models.IntegerField(choices=SEASONS)
     date_created = models.DateTimeField()
 
+    # class Meta:
+    #     unique_together = ('season', 'user')
+
     def __str__(self):
         return "%s" % self.season
 
@@ -72,6 +75,9 @@ class City(models.Model):
     name = models.CharField(max_length=100)
     color = models.CharField(max_length=1, choices=COLORS)
     is_faded = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = "cities"
 
     def __str__(self):
         return self.name

@@ -1,0 +1,27 @@
+{% extends "./base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'game/css/pick-campaign.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="season-picker">
+        {% for campaign in campaigns %}
+            <a class="season-picker__season" href="{% url 'game:play_campaign' pk=campaign.id %}">
+                {% if campaign.season == 1 %}
+                    <img class="season-picker__season__image"
+                         src="{% static 'game/img/season-1.png' %}"/>
+                {% elif campaign.season == 2 %}
+                    <img class="season-picker__season__image"
+                         src="{% static 'game/img/season-2.png' %}" />
+                {% endif %}
+
+                <div class="season-picker__season__text">
+                    Season&nbsp;{{ campaign.season }}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -2,40 +2,43 @@
 
 {% load static %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'game/css/play.css' %}" />
+{% endblock %}
 {% block js %}
+    <script src="{% static 'game/js/city-row.directive.js' %}"></script>
     <script src="{% static 'game/js/game.controller.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <div class="game" ng-controller="GameController as gameCtrl">
-        <div class="start-game" ng-show="!gameCtrl.campaignId">
-            <button ng-repeat="campaign in gameCtrl.campaigns"
-                    ng-click="gameCtrl.startGame(campaign)" ng-bind="campaign.season"></button>
+    <div ng-controller="GameController as gameCtrl" ng-init="gameCtrl.startGame({{ campaign.id }})">
+        <div class="game" ng-show="gameCtrl.campaignId">
+            {# Deck sections #}
+            <div class="game__column">
+                <div ng-repeat="deckSection in gameCtrl.deck"
+                     class="city-group">
+                    <city-row ng-repeat="city in deckSection" city="city"
+                              ng-click="gameCtrl.playCityCard($parent.$index, $index)"></city-row>
+                </div>
+            </div>
+
+            {# Discard Pile #}
+            <div class="game__column">
+                <button ng-click="gameCtrl.openEpidemicModal()">Trigger Epidemic</button>
+                <div class="city-group">
+                    <city-row ng-repeat="city in gameCtrl.discardPile" city="city"></city-row>
+                </div>
+            </div>
         </div>
 
-        <div class="deck">
-            <div class="city-group">
-                <div class="city-group__city" ng-repeat="city in gameCtrl.cities">
-                    <div class="city-group__city__icon" ng-bind="city.color"></div>
-                    <div class="city-group__city__name" ng-bind="city.name"></div>
-                </div>
-            </div>
-        </div>
-        <div class="discard-pile">
-            <div class="city-group">
-                <div class="city-group__city" ng-bind="">
-                    <div class="city-group__city__icon"></div>
-                    <div class="city-group__city__name"></div>
-                </div>
-            </div>
-        </div>
-        <div class="discard-pile">
-            <div class="city-group">
-                <div class="city-group__city" ng-bind="">
-                    <div class="city-group__city__icon"></div>
-                    <div class="city-group__city__name"></div>
-                </div>
-            </div>
+        {# Epidemic #}
+        <div class="epidemic" ng-class="{'in': gameCtrl.showEpidemicModal}">
+            <div class="epidemic__close" ng-click="gameCtrl.closeEpidemicModal()">&times;</div>
+            <div class="epidemic__title">Epidemic!</div>
+            <form class="epidemic__search" ng-submit="gameCtrl.triggerEpidemic()">
+                <input ng-model="gameCtrl.epidemicSearch" class="epidemic__search__input" type="text" />
+                <button class="epidemic__search__button" type="submit"></button>
+            </form>
         </div>
     </div>
 {% endblock %}

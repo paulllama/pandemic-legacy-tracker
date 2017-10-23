@@ -15,13 +15,16 @@ class IndexView(generic.TemplateView):
     template_name = "game/index.html"
 
 
-class GameView(generic.TemplateView):
+class CampaignsListView(generic.ListView):
+    template_name = "game/pick-campaign.html"
+    context_object_name = 'campaigns'
+    queryset = Campaign.objects.all()
+
+
+class PlayCampaignView(generic.DetailView):
     template_name = "game/play.html"
-
-
-def get_campaigns(request):
-    campaigns = [campaign.to_json() for campaign in Campaign.objects.all()]
-    return JsonResponse(campaigns, safe=False)
+    model = Campaign
+    context_object_name = "campaign"
 
 
 def start_campaign(request):

@@ -1,0 +1,7 @@
+<div class="city-row">
+    <div ng-if="!city.is_faded" class="city-row__icon--location" ng-class="city.color"></div>
+    <div ng-if="city.is_faded" class="city-row__icon--faded"></div>
+
+    <div class="city-row__name" ng-bind="city.name"></div>
+    <div class="city-row__actions"></div>
+</div>

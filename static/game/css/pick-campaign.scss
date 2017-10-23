@@ -1,0 +1,14 @@
+@import "base";
+@import "card";
+
+.season-picker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .season-picker__season {
+    @include card($clickable: true);
+    width: 16rem;
+  }
+}
