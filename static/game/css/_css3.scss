@@ -409,8 +409,28 @@
 /// @param {*} $str - name duration timing-function delay iteration-count direction fill-mode play-state ([http://www.w3schools.com/cssref/css3_pr_animation.asp](http://www.w3schools.com/cssref/css3_pr_animation.asp))
 /// @require {mixin} css3-prefix
 
-@mixin animation($str) {
-  @include css3-prefix('animation', $str);
+@mixin animation(
+    $name,
+    $duration,
+    $timing-function: false,
+    $delay: false,
+    $direction: false,
+    $iteration-count: false,
+    $fill-mode: false,
+    $play-state: false) {
+
+    @include keyframes($name) {
+        @content;
+    }
+    @include css3-prefix('animation-name', $name);
+    @include css3-prefix('animation-duration', $duration);
+
+    @if $timing-function { @include css3-prefix('animation-timing-function', $timing-function); }
+    @if $delay { @include css3-prefix('animation-delay', $delay); }
+    @if $direction { @include css3-prefix('animation-direction', $direction); }
+    @if $iteration-count { @include css3-prefix('animation-iteration-count', $iteration-count); }
+    @if $fill-mode { @include css3-prefix('animation-fill-mode', $fill-mode); }
+    @if $play-state { @include css3-prefix('animation-play-state', $play-state); }
 }
 
 @mixin text-stroke($stroke-width, $stroke-color) {

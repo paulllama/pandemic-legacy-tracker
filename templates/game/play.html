@@ -40,6 +40,16 @@
                 <div class="deck">
                     <div ng-repeat="deckSection in gameCtrl.deck"
                          class="deck__section">
+                        <div ng-show="gameCtrl.predictionsForDeckSection[$index].length > 0"
+                             class="deck__section__probabilities">
+                            <span ng-repeat="probability in gameCtrl.predictionsForDeckSection[$index] track by $index"
+                                  class="deck__section__probabilities__value"
+                                  ng-bind="probability"></span>
+                        </div>
+                        <div ng-hide="gameCtrl.predictionsForDeckSection[$index].length > 0"
+                             class="deck__section__dont-worry">
+                            Don't worry about these... yet
+                        </div>
                         <city-row ng-repeat="city in deckSection | filter:gameCtrl.deckSearchInput" city="city"
                                   ng-click="gameCtrl.playCityCard(city)"></city-row>
                     </div>

@@ -4,6 +4,8 @@
 @import "../text-input-with-label/text-input-with-label";
 @import "../modal/modal";
 
+$post-epidemic-delay: 0.3s;
+
 .infection-level {
     margin-top: 2rem;
 
@@ -37,7 +39,7 @@
             font-size: 0.8rem;
             @include transition(
                 $properties: background width height color,
-                $delay: 0.75s,
+                $delay: $post-epidemic-delay,
                 $duration: 0.5s);
 
             &.current {
@@ -64,10 +66,61 @@
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    min-width: 50vw;
 
     .deck__section {
+        $deck-section-padding: 1.5rem;
         @include card();
+        padding: 0 0 $deck-section-padding;
         margin-right: 1.5rem;
+        overflow: hidden;
+
+        @include animation(
+            $fill-mode: both,
+            $duration: 0.75s,
+            $delay: $post-epidemic-delay,
+            $name: sectionEntrance)
+        {
+            from { max-width: 0; opacity: 0; margin-right: 0; }
+            to { max-width: 17em; }
+        }
+
+        .deck__section__probabilities {
+            display: flex;
+            flex-direction: row;
+            justify-content: stretch;
+            margin-bottom: $deck-section-padding;
+
+            .deck__section__probabilities__value {
+                flex: 1 0;
+                text-align: center;
+                padding: 0.75em 0.5rem;
+
+                &:after {
+                    content: "%";
+                }
+
+                @for $i from 1 through 3 {
+                    &:nth-child(#{$i}) {
+                        background: rgba(#fff, 0.4 / $i);
+                        color: rgba(#fff, 0.6 / $i + 0.4);
+                    }
+                }
+            }
+        }
+
+        .deck__section__dont-worry {
+            margin-bottom: $deck-section-padding;
+            padding: 0.75rem $deck-section-padding;
+            background: rgba(#fff, 0.2);
+            color: rgba(#fff, 0.6);
+            text-align: center;
+        }
+
+        .city-row {
+            margin-left: $deck-section-padding;
+            margin-right: $deck-section-padding;
+        }
     }
 }
 
