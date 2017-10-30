@@ -6,39 +6,63 @@
     <link rel="stylesheet" href="{% static 'game/css/play.css' %}" />
 {% endblock %}
 {% block js %}
+    <script src="{% static 'game/modal/modal.directive.js' %}"></script>
+    <script src="{% static 'game/text-input-with-label/text-input-with-label.directive.js' %}"></script>
     <script src="{% static 'game/js/city-row.directive.js' %}"></script>
     <script src="{% static 'game/js/game.controller.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <div ng-controller="GameController as gameCtrl" ng-init="gameCtrl.startGame({{ campaign.id }})">
-        <div class="game" ng-show="gameCtrl.campaignId">
-            {# Deck sections #}
-            <div class="game__column">
-                <div ng-repeat="deckSection in gameCtrl.deck"
-                     class="city-group">
-                    <city-row ng-repeat="city in deckSection" city="city"
-                              ng-click="gameCtrl.playCityCard($parent.$index, $index)"></city-row>
-                </div>
-            </div>
 
+        <div class="infection-level">
+            <div class="infection-level__title">Infection Level</div>
+            <div class="infection-level__amounts">
+                <div ng-repeat="value in gameCtrl.INFECTION_AMOUNTS track by $index"
+                     class="infection-level__amounts__value"
+                     ng-class="{'current': $index === gameCtrl.infectionLevel}"
+                     ng-bind="value"></div>
+            </div>
+        </div>
+
+        <div class="game">
             {# Discard Pile #}
             <div class="game__column">
-                <button ng-click="gameCtrl.openEpidemicModal()">Trigger Epidemic</button>
-                <div class="city-group">
-                    <city-row ng-repeat="city in gameCtrl.discardPile" city="city"></city-row>
+                <button class="button" ng-click="gameCtrl.openEpidemicModal()">Trigger Epidemic</button>
+                <city-row ng-repeat="city in gameCtrl.discardPile" city="city"></city-row>
+            </div>
+
+            {# Deck sections #}
+            <div class="game__column">
+                <text-input-with-label ng-model="gameCtrl.deckSearchInput"
+                                       label="Search the deck"></text-input-with-label>
+
+                <div class="deck">
+                    <div ng-repeat="deckSection in gameCtrl.deck"
+                         class="deck__section">
+                        <city-row ng-repeat="city in deckSection | filter:gameCtrl.deckSearchInput" city="city"
+                                  ng-click="gameCtrl.playCityCard(city)"></city-row>
+                    </div>
+
                 </div>
             </div>
         </div>
 
         {# Epidemic #}
-        <div class="epidemic" ng-class="{'in': gameCtrl.showEpidemicModal}">
-            <div class="epidemic__close" ng-click="gameCtrl.closeEpidemicModal()">&times;</div>
-            <div class="epidemic__title">Epidemic!</div>
-            <form class="epidemic__search" ng-submit="gameCtrl.triggerEpidemic()">
-                <input ng-model="gameCtrl.epidemicSearch" class="epidemic__search__input" type="text" />
-                <button class="epidemic__search__button" type="submit"></button>
-            </form>
-        </div>
+        <modal show="gameCtrl.showEpidemicModal">
+            <div class="epidemic">
+                <div class="epidemic__close" ng-click="gameCtrl.closeEpidemicModal()">&times;</div>
+                <div class="epidemic__title">Epidemic!</div>
+                <form class="epidemic__search" ng-submit="gameCtrl.triggerEpidemic()">
+                    <text-input-with-label css-class="epidemic__search__input"
+                                           ng-model="gameCtrl.epidemicSearch"
+                                           label="Search for a city"></text-input-with-label>
+                    <div class="city-group" ng-show="gameCtrl.epidemicSearch">
+                        <city-row ng-repeat="city in gameCtrl.deck[gameCtrl.deck.length - 1] | filter:gameCtrl.epidemicSearch"
+                                  city="city" ng-click="gameCtrl.triggerEpidemic(city)"></city-row>
+                    </div>
+                </form>
+            </div>
+        </modal>
     </div>
 {% endblock %}

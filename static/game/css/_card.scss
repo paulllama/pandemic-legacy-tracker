@@ -1,34 +1,8 @@
 @import "css3";
 
-@mixin card($clickable: false) {
-  $card-bg: #fff;
-  background: $card-bg;
-  border-radius: 0.1rem;
-  margin-bottom: 1.5rem;
-  @include box-shadow(0, 0.1em, 0.4em, rgba(#000, 0.2));
-  @include transition($properties: background box-shadow);
-  overflow: hidden;
-
-  &__image {
-    width: 100%;
-    display: block;
-  }
-
-  &__text {
-    $card-line-height: 1.5em;
-    $card-min-lines: 2;
-    $card-padding: 0.75em;
-
-    padding: $card-padding;
-    min-height: $card-min-lines * $card-line-height + 2 * $card-padding;
-  }
-
-  @if ($clickable) {
-    cursor: pointer;
-
-    &:hover {
-      background: darken($card-bg, 4%);
-      @include box-shadow(0, 0.1em, 1em, rgba(#000, 0.2));
-    }
-  }
+@mixin card($clickable: false, $card-color: #fff, $opacity: 0.2) {
+    background: rgba($card-color, $opacity);
+    padding: 1.5em;
+    border-radius: 0.5em;
+    border: 0.1em solid rgba($card-color, $opacity * 2);
 }

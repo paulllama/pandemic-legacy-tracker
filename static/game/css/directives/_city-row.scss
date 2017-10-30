@@ -1,40 +1,69 @@
 @import "../variables";
+@import "../css3";
 
 .city-row {
-    border-bottom: 1px solid #f5f5f5;
+    $city-row-height: 2.5em;
+    $city-row-border-radius: 0.25em;
+    $city-row-border-width: 0.1em;
+
     display: flex;
     flex-direction: row;
-    padding: 0.7em 1em;
+    font-size: 1rem;
+    height: $city-row-height;
+    border-radius: $city-row-border-radius;
+    color: white;
+    line-height: $city-row-height;
+    margin-bottom: 0.5em;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    width: 13em;
+    text-transform: uppercase;
 
-    @mixin city-row__icon() {
+    @include transition($properties: background);
+
+    .city-row__icon {
         font-size: 1em;
         margin-right: 0.7em;
-    }
-
-    .city-row__icon--location {
-        @include city-row__icon();
-
-        &:before {
-            @include font-awesome($fa-var-map-marker);
-            color: inherit;
-        }
-
-        &.r { color: $color-city-red; }
-        &.u { color: $color-city-blue; }
-        &.b { color: $color-city-black; }
-        &.y { color: $color-city-yellow; }
-    }
-
-    .city-row__icon--faded {
-        @include city-row__icon();
-        color: $color-city-faded;
+        background: rgba(#fff, 0.3);
+        color: white;
+        width: $city-row-height - $city-row-border-width;
+        height: $city-row-height - $city-row-border-width;
+        text-align: center;
 
         &:before {
             @include font-awesome($fa-var-bug);
+            font-size: 1.5em;
         }
     }
 
-    &:hover {
-      background: darken(#fff, 4%);
+    .city-row__name {
+
     }
+
+    @mixin city-row-color($color) {
+        background: rgba($color, 0.25);
+        border: 0.1em solid rgba(lighten($color, 10%), 0.5);
+
+        .city-row__icon {
+            background: rgba($color, 0.5);
+
+            &:before {
+                @include font-awesome($fa-var-map-marker);
+                font-size: 1.3em;
+            }
+
+        }
+
+        &:hover {
+            background: rgba($color, 0.75);
+        }
+
+
+    }
+
+    &.r { @include city-row-color($color-city-red); }
+    &.u { @include city-row-color($color-city-blue); }
+    &.b { @include city-row-color($color-city-black); }
+    &.y { @include city-row-color($color-city-yellow); }
+
 }

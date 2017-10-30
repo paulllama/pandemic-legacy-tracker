@@ -1,0 +1,62 @@
+@import "variables";
+@import "css3";
+
+.button {
+    $button-bg: #da3817;
+    $button-skew: -30deg;
+
+    background: transparent;
+    color: white;
+    display: block;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding: 1.25em 4em;
+    text-align: center;
+    margin-bottom: 1.5em;
+    position: relative;
+    max-width: 25rem;
+    line-height: 1;
+    width: 100%;
+    z-index: 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:before, &:after {
+        content: '';
+        display: block;
+        border-radius: 0.25em;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    &:before {
+        background: rgba($button-bg, 0.5);
+        z-index: -1;
+        @include transition($properties: background transform);
+    }
+
+    &:after {
+        $border-width: 0.15em;
+        border: $border-width solid lighten($button-bg, 20%);
+        z-index: 0;
+        @include transition($properties: transform border-color);
+    }
+
+
+    &:hover {
+        &:before {
+            background: rgba($button-bg, 0.75);
+            transform: translate(-0.25em, 0.25em);
+        }
+
+        &:after {
+            transform: translate(0.25em, -0.25em);
+            border-color: lighten($button-bg, 35%);
+        }
+    }
+}

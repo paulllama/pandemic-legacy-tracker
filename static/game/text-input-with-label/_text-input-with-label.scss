@@ -1,0 +1,37 @@
+@import "../css/css3";
+
+.text-input {
+    border: 1px solid white;
+    background: white;
+    border-radius: 0.15em;
+    padding: 1.6em 0.5em 0.5em;
+    margin-bottom: 1.5em;
+    position: relative;
+    display: block;
+    max-width: 25rem;
+    text-align: left;
+
+    &.text-input--with-content {
+        .text-input__label {
+            font-size: 0.7em;
+            top: 0.75em;
+        }
+    }
+
+    .text-input__label {
+        font-size: 1em;
+        position: absolute;
+        top: 1.15em;
+        opacity: 0.6;
+        text-transform: uppercase;
+        @include transition($properties: top font-size);
+    }
+
+    .text-input__input {
+        border: none;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        font-size: 1em;
+    }
+}

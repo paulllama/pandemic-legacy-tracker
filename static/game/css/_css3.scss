@@ -412,3 +412,13 @@
 @mixin animation($str) {
   @include css3-prefix('animation', $str);
 }
+
+@mixin text-stroke($stroke-width, $stroke-color) {
+    $negative-width: -1 * $stroke-width;
+
+    text-shadow:
+            $stroke-width $stroke-width $stroke-color,
+            $negative-width $stroke-width $stroke-color,
+            $stroke-width $negative-width $stroke-color,
+            $negative-width $negative-width $stroke-color;
+}
