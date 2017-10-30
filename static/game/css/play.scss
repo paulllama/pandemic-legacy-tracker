@@ -192,4 +192,13 @@ $post-epidemic-delay: 0.3s;
         font-weight: $font-weight-bold;
         text-transform: uppercase;
     }
+
+    .epidemic__results {
+        @include card();
+        margin: 1rem 2rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
 }

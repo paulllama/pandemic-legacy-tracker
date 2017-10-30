@@ -28,6 +28,12 @@ class GameController {
         this.generateProbabilitiesForFullDeck();
     }
 
+    submitEpidemicForm(cityList) {
+        if (cityList && cityList.length === 1) {
+            this.triggerEpidemic(cityList[0]);
+        }
+    }
+
     triggerEpidemic(city) {
         this.moveCityToDiscardFromDeckSection(this.deck.length - 1, city);
 

@@ -63,12 +63,12 @@
             <div class="epidemic">
                 <div class="epidemic__close" ng-click="gameCtrl.closeEpidemicModal()">&times;</div>
                 <div class="epidemic__title">Epidemic!</div>
-                <form class="epidemic__search" ng-submit="gameCtrl.triggerEpidemic()">
+                <form ng-submit="gameCtrl.submitEpidemicForm(filteredEpidemicList)">
                     <text-input-with-label css-class="epidemic__search__input"
                                            ng-model="gameCtrl.epidemicSearch"
                                            label="Search for a city"></text-input-with-label>
-                    <div class="city-group" ng-show="gameCtrl.epidemicSearch">
-                        <city-row ng-repeat="city in gameCtrl.deck[gameCtrl.deck.length - 1] | filter:gameCtrl.epidemicSearch"
+                    <div class="epidemic__results" ng-show="gameCtrl.epidemicSearch">
+                        <city-row ng-repeat="city in gameCtrl.deck[gameCtrl.deck.length - 1] | filter:gameCtrl.epidemicSearch as filteredEpidemicList"
                                   city="city" ng-click="gameCtrl.triggerEpidemic(city)"></city-row>
                     </div>
                 </form>
