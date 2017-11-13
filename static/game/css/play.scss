@@ -136,14 +136,7 @@ $post-epidemic-delay: 0.3s;
     position: relative;
 
     &:before, &:after {
-        content: '';
-        position: absolute;
-        left: -$epidemic-border-width;
-        width: calc(100% + 2 * #{$epidemic-border-width});
-        height: $epidemic-border-width;
-        border-top: $epidemic-border-width dashed $color-city-yellow;
-        opacity: 0.7;
-        transform: skew(-30deg);
+        @include skewed-dashes(1em);
     }
 
     &:before {
