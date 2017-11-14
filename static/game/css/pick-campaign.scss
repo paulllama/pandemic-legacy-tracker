@@ -10,5 +10,19 @@
   .season-picker__season {
     @include card($clickable: true);
     width: 16rem;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .season-picker__season__image {
+      width: 100%;
+    }
+
+    .season-picker__season__text {
+      padding: 0.5em 1em 0.75em;
+      background: rgba($color-white, 0.5);
+
+    }
   }
 }
