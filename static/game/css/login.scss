@@ -1,0 +1,17 @@
+@import "base";
+@import "card";
+@import "../text-input-with-label/text-input-with-label";
+
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  justify-content: center;
+
+  .login__form {
+    @include card();
+    width: 26rem;
+  }
+}

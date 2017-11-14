@@ -7,19 +7,22 @@
 {% endblock %}
 
 {% block content %}
+    <h1>My Campaigns</h1>
     <div class="season-picker">
-        {% for campaign in campaigns %}
-            <a class="season-picker__season" href="{% url 'game:play_campaign' pk=campaign.id %}">
-                {% if campaign.season == 1 %}
-                    <img class="season-picker__season__image"
-                         src="{% static 'game/img/season-1.png' %}"/>
-                {% elif campaign.season == 2 %}
-                    <img class="season-picker__season__image"
-                         src="{% static 'game/img/season-2.png' %}" />
-                {% endif %}
-
-                <div class="season-picker__season__text">
-                    Season&nbsp;{{ campaign.season }}
+        {% for season, campaign in campaigns.items %}
+            <a class="season-picker__season"
+                href="{% url 'game:play_campaign' season_id=season %}">
+                <img class="season-picker__season__image"
+                     src="/static/game/img/season-{{ season }}.png"/>
+                <div class="season-picker__season__title">
+                    Season&nbsp;{{ season }}
+                </div>
+                <div class="season-picker__season__meta">
+                    {% if campaign is None %}
+                        Start Campaign
+                    {% else %}
+                        Started {{ campaign.date_created|date:"j M Y" }}
+                    {% endif %}
                 </div>
             </a>
         {% endfor %}

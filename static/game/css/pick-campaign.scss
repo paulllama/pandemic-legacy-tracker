@@ -2,27 +2,37 @@
 @import "card";
 
 .season-picker {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  .season-picker__season {
-    @include card($clickable: true);
-    width: 16rem;
-    padding: 0;
-    overflow: hidden;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 
-    .season-picker__season__image {
-      width: 100%;
-    }
+    .season-picker__season {
+        @include card($clickable: true);
+        width: 18rem;
+        margin: 2rem;
+        padding: 0 0 0.4rem;
+        text-decoration: none;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
 
-    .season-picker__season__text {
-      padding: 0.5em 1em 0.75em;
-      background: rgba($color-white, 0.5);
+        .season-picker__season__image {
+            width: 100%;
+        }
 
-    }
+        .season-picker__season__title {
+            padding: 0 1rem;
+            font-size: 1.4rem;
+            color: $color-white;
+            margin: 0.85rem 0 0.35rem;
+        }
+
+        .season-picker__season__meta {
+            padding: 0 1rem;
+            color: rgba($color-white, 0.75);
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+        }
   }
 }

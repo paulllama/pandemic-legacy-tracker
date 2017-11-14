@@ -1,54 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
 from django.contrib.auth.models import User
-
-
-class Color:
-    red = 'r'
-    blue = 'u'
-    yellow = 'y'
-    black = 'b'
-
-
-COLORS = (
-    (Color.red, 'Red'),
-    (Color.blue, 'Blue'),
-    (Color.yellow, 'Yellow'),
-    (Color.black, 'Black'),
-)
-
-
-class Season:
-    one = 1
-    two = 2
-
-    def __init__(self, value):
-        self.value = value
-        self.name = {
-            1: 'Season 1',
-            2: 'Season 2',
-        }[self.value]
-
-    def __str__(self):
-        return self.name
-
-
-
-SEASONS = (
-    (Season.one, 'Season 1'),
-    (Season.two, 'Season 2'),
-)
+from game.default_cities import season_1_cities
+from django.db.models.signals import post_init
+from django.dispatch import receiver
+import season
+import color
 
 
 class Campaign(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    season = models.IntegerField(choices=SEASONS)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    season = models.IntegerField(choices=season.all_choices)
     date_created = models.DateTimeField()
 
-    # class Meta:
-    #     unique_together = ('season', 'user')
+    class Meta:
+        unique_together = ('season', 'user')
 
     def __str__(self):
         return "%s" % self.season
@@ -59,6 +26,19 @@ class Campaign(models.Model):
             date_created=self.date_created,
             id=self.id
         )
+
+
+@receiver(post_init, sender=Campaign)
+def create_default_cities(sender, instance, **kwargs):
+    for city_color, cities in season_1_cities.iteritems():
+        for city_name in cities:
+            city = City()
+
+            city.name = city_name
+            city.color = city_color
+            city.campaign = instance
+
+            # city.save()
 
 
 class Score(models.Model):
@@ -73,7 +53,7 @@ class Score(models.Model):
 class City(models.Model):
     campaign = models.ForeignKey(Campaign, default=None, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    color = models.CharField(max_length=1, choices=COLORS)
+    color = models.CharField(max_length=1, choices=color.all_choices)
     is_faded = models.BooleanField(default=False)
 
     class Meta:

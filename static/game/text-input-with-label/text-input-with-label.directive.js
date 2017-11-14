@@ -3,6 +3,7 @@ angular.module("text-input-with-label.directive", []).directive("textInputWithLa
         restrict: "E",
         templateUrl: "/static/game/text-input-with-label/text-input-with-label.html",
         scope: {
+            isPassword: "=",
             ngModel: "=",
             label: "@",
             cssClass: "@"

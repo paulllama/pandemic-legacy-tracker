@@ -1,7 +1,7 @@
-from models import Color
+import color
 
 season_1_cities = {
-    Color.red: [
+    color.red: [
         'Beijing',
         'Seoul',
         'Shanghai',
@@ -15,7 +15,7 @@ season_1_cities = {
         'Manila',
         'Sydney',
     ],
-    Color.blue: [
+    color.blue: [
         'San Francisco',
         'Chicago',
         'Montreal',
@@ -29,7 +29,7 @@ season_1_cities = {
         'Milan',
         'St. Petersburg',
     ],
-    Color.yellow: [
+    color.yellow: [
         'Los Angeles',
         'Mexico City',
         'Miami',
@@ -43,7 +43,7 @@ season_1_cities = {
         'Khartoum',
         'Johannesburg',
     ],
-    Color.black: [
+    color.black: [
         'Algiers',
         'Cairo',
         'Baghdad',

@@ -437,6 +437,11 @@
     $negative-width: -1 * $stroke-width;
 
     text-shadow:
+            0 $stroke-width $stroke-color,
+            $stroke-width 0 $stroke-color,
+            $negative-width 0 $stroke-color,
+            0 $negative-width $stroke-color,
+            $negative-width $negative-width $stroke-color,
             $stroke-width $stroke-width $stroke-color,
             $negative-width $stroke-width $stroke-color,
             $stroke-width $negative-width $stroke-color,

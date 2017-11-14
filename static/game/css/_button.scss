@@ -2,10 +2,21 @@
 @import "css3";
 
 .button {
-    $button-bg: $color-city-red;
+    @mixin button-colors($bg-color, $dashes-color) {
+        background: rgba($bg-color, 0.75);
+        border: 0.15em solid rgba($bg-color, 0.75);
 
-    background: rgba($button-bg, 0.75);
-    border: 0.15em solid rgba($button-bg, 0.75);
+        &:before {
+            $dash-height: 0.35em;
+            @include skewed-dashes($dash-height, $dashes-color);
+        }
+
+        &:hover {
+            background: rgba($bg-color, 0.9);
+        }
+    }
+
+    @include button-colors($color-city-yellow, $color-city-black);
     color: white;
     display: block;
     outline: none;
@@ -25,13 +36,11 @@
     @include transition($properties: background border);
 
     &:before {
-        $dash-height: 0.35em;
-        @include skewed-dashes($dash-height);
         top: 0;
     }
 
-    &:hover {
-        background: rgba($button-bg, 0.9);
-
+    &.button--danger {
+        @include button-colors($color-city-red, $color-city-yellow);
     }
 }
+

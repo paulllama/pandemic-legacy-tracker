@@ -52,10 +52,20 @@ table {
 @import "fonts";
 @import "nav";
 @import "button";
+@import "css3";
 
 body {
 	background: url(/static/game/img/bacteria-background.jpg) repeat;
     min-height: 100vh;
+}
+
+h1 {
+	font-size: 3rem;
+	margin: 1em 0.25em 0.5em;
+	text-align: center;
+	font-family: $font-family-header;
+	text-transform: uppercase;
+	color: $color-city-yellow;
 }
 
 *, :before, :after {

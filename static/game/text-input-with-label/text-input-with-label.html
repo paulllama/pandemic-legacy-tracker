@@ -3,6 +3,7 @@
     <span class="text-input__label"
           ng-bind="label"></span>
     <input class="text-input__input"
+           ng-attr-type="{{ isPassword ? 'password' : 'text' }}"
            ng-model="ngModel"
            ng-focus="focus = true"
            ng-blur="focus = false"/>

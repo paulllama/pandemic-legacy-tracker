@@ -1,0 +1,30 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'game/css/login.css' %}" />
+{% endblock %}
+{% block js %}
+    <script src="{% static 'game/js/angular-django-csrf-config.js' %}"></script>
+    <script src="{% static 'game/text-input-with-label/text-input-with-label.directive.js' %}"></script>
+    <script src="{% static 'game/js/login.controller.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="login" ng-controller="LoginController as loginCtrl">
+        <form class="login__form"
+              {% if "login" in request.path %} ng-submit="loginCtrl.login()" {% endif %}
+              {% if "create-account" in request.path %} ng-submit="loginCtrl.createUser()" {% endif %} >
+            <div class="login__form__error" ng-bind="loginCtrl.error"></div>
+            <text-input-with-label ng-model="loginCtrl.email"
+                                   label="Email"></text-input-with-label>
+            <text-input-with-label ng-model="loginCtrl.password"
+                                   is-password="true"
+                                    label="Password"></text-input-with-label>
+            <button class="button" type="submit">
+                {% if "login" in request.path %}Login{% endif %}
+                {% if "create-account" in request.path %}Create Account{% endif %}
+            </button>
+        </form>
+    </div>
+{% endblock %}

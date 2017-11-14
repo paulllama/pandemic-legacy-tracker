@@ -123,3 +123,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+
+LOGIN_URL = '/login'
+MIN_PASSWORD_LENGTH = 8
