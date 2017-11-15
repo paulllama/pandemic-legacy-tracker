@@ -1,3 +1,40 @@
+@import "variables";
+@import "fonts";
+
+$body-base-bg: #13507a;
+
 body {
-    background: #f5f5f5;
+    background: $body-base-bg;
+}
+
+.nav {
+    $dash-height: 0rem;//0.65rem;
+    $nav-padding: 1.25rem;
+
+    background: rgba(darken($body-base-bg, 90%), 0.35);
+    padding: ($dash-height + $nav-padding) $nav-padding $nav-padding;
+    display: flex;
+    flex-direction: row;
+    color: $color-white;
+    justify-content: space-between;
+
+    &:before {
+        @include skewed-dashes($dash-height, lighten($body-base-bg, 10%));
+        top: 0;
+    }
+
+    .nav__logo {
+        font-size: 1.5rem;
+        font-family: $font-family-header;
+        text-transform: uppercase;
+        transform: skew(-15deg);
+
+        &:before {
+            content: none;
+        }
+    }
+
+    .nav__link {
+        margin-left: 2em;
+    }
 }

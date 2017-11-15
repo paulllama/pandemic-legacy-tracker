@@ -59,13 +59,53 @@ body {
     min-height: 100vh;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+
+    &:not(.button) {
+        font-weight: $font-weight-bold;
+        letter-spacing: 0.05em;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        $underline-size: 0.1em;
+
+        &:before {
+            width: 100%;
+            content: '';
+            height: $underline-size;
+            background: currentColor;
+            color: inherit;
+            opacity: 0.75;
+            position: absolute;
+            bottom: -$underline-size;
+            z-index: 0;
+
+            @include transition($properties: opacity bottom);
+        }
+
+        &:hover {
+            &:before {
+                bottom: -2 * $underline-size;
+                opacity: 1;
+            }
+        }
+    }
+}
+
 h1 {
+    $shadow-size: 0.065em;
+
 	font-size: 3rem;
 	margin: 1em 0.25em 0.5em;
 	text-align: center;
 	font-family: $font-family-header;
 	text-transform: uppercase;
 	color: $color-city-yellow;
+    transform: skew(-15deg);
+    text-shadow: $shadow-size $shadow-size darken($color-city-yellow, 40%);
+    letter-spacing: $shadow-size;
 }
 
 *, :before, :after {

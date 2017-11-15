@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^campaigns/season-(?P<season_id>[0-9]+)/cities/$', views.get_cities, name="get_cities"),
     url(r'^campaigns/season-(?P<season_id>[0-9]+)/cities/(?P<city_id>[0-9]+)/toggle-fade/$', views.toggle_fade, name="toggle_fade"),
 
+    url(r'^about/$', views.AboutView.as_view(), name="about"),
     url(r'^$', views.IndexView.as_view(), name="index"),
 ]
 

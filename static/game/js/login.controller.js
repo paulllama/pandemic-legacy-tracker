@@ -1,8 +1,9 @@
 class LoginController {
     constructor($http) {
         this.$http = $http;
-        this.email = "";
+        this.username = "";
         this.password = "";
+        this.passwordConfirm = "";
 
         this.LOGIN_URL = "/login/";
         this.CREATE_USER_URL = "/create-account/";
@@ -14,12 +15,17 @@ class LoginController {
     }
 
     createUser() {
-        this.postUserDataToUrl(this.CREATE_USER_URL);
+        if (this.password === this.passwordConfirm) {
+            this.postUserDataToUrl(this.CREATE_USER_URL);
+        }
+        else {
+            this.error = "Passwords do not match";
+        }
     }
 
     postUserDataToUrl(url) {
         this.$http.post(url, {
-            email: this.email,
+            username: this.username,
             password: this.password
         })
         .then(function (response) {
@@ -30,8 +36,10 @@ class LoginController {
                 window.location = this.REDIRECT_URL;
             }
         }.bind(this))
+    }
 
-
+    clearError() {
+        this.error = "";
     }
 }
 

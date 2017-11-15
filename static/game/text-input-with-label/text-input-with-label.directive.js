@@ -5,6 +5,7 @@ angular.module("text-input-with-label.directive", []).directive("textInputWithLa
         scope: {
             isPassword: "=",
             ngModel: "=",
+            ngChange: "&",
             label: "@",
             cssClass: "@"
         },

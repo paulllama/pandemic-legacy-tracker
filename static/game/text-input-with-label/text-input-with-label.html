@@ -5,6 +5,7 @@
     <input class="text-input__input"
            ng-attr-type="{{ isPassword ? 'password' : 'text' }}"
            ng-model="ngModel"
+           ng-change="ngChange()"
            ng-focus="focus = true"
            ng-blur="focus = false"/>
 </label>

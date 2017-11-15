@@ -1,0 +1,14 @@
+{% extends "./base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'game/css/home.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="about">
+        <h1>About</h1>
+        <p>Created by <a href="//paularmer.me">Paul Armer</a></p>
+    </div>
+{% endblock %}

@@ -1,12 +1,12 @@
 @import "variables";
 @import "css3";
+@import "fonts";
 
 .button {
     @mixin button-colors($bg-color, $dashes-color) {
         background: rgba($bg-color, 0.75);
-        border: 0.15em solid rgba($bg-color, 0.75);
 
-        &:before {
+        &:before, &:after {
             $dash-height: 0.35em;
             @include skewed-dashes($dash-height, $dashes-color);
         }
@@ -16,10 +16,12 @@
         }
     }
 
-    @include button-colors($color-city-yellow, $color-city-black);
+    @include button-colors($color-city-yellow, mix($color-city-black, $color-city-yellow, 65%));
     color: white;
-    display: block;
+    display: inline-block;
+    border-radius: 0.25em;
     outline: none;
+    border: none;
     font-size: 1.15rem;
     padding: 1em 4em;
     text-align: center;
@@ -33,10 +35,15 @@
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
+    font-family: $font-family-header;
+    letter-spacing: 0.05em;
     @include transition($properties: background border);
 
     &:before {
         top: 0;
+    }
+    &:after {
+        bottom: 0;
     }
 
     &.button--danger {

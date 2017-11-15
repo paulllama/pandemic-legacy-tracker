@@ -12,9 +12,9 @@
 
 {% block content %}
     <div class="login" ng-controller="LoginController as loginCtrl">
-        <form class="login__form" ng-submit="loginCtrl.login()">
+        <form class="login__form" ng-submit="loginCtrl.createUser()">
 
-            <div class="login__form__title">Log In</div>
+            <div class="login__form__title">Create Account</div>
             <div class="login__form__error" ng-show="loginCtrl.error" ng-bind="loginCtrl.error"></div>
 
             <text-input-with-label ng-model="loginCtrl.username"
@@ -23,9 +23,13 @@
                                    is-password="true"
                                    ng-change="loginCtrl.clearError()"
                                     label="Password"></text-input-with-label>
+            <text-input-with-label ng-model="loginCtrl.passwordConfirm"
+                                   is-password="true"
+                                   ng-change="loginCtrl.clearError()"
+                                    label="Confirm Password"></text-input-with-label>
 
-            <button class="button" type="submit">Log in</button>
-            <a class="login__form__link" href="{% url 'game:create_user' %}">Create an account</a>
+            <button class="button" type="submit">Create Account</button>
+            <a class="login__form__link" href="{% url 'game:login' %}">Login</a>
         </form>
     </div>
 {% endblock %}

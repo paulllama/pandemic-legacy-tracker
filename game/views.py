@@ -20,6 +20,10 @@ class IndexView(generic.TemplateView):
     template_name = "game/index.html"
 
 
+class AboutView(generic.TemplateView):
+    template_name = "game/about.html"
+
+
 @login_required
 def campaign_list(request):
     campaigns_by_season = {}
@@ -94,7 +98,7 @@ def create_account(request):
         try:
             post_body = json.loads(request.body)
 
-            email = post_body['email']
+            email = post_body['username']
             password = post_body['password']
 
             if len(password) < MIN_PASSWORD_LENGTH:
@@ -112,14 +116,14 @@ def create_account(request):
                 'error': 'Username and password are required'
             })
     else:
-        return render(request, 'game/login.html')
+        return render(request, 'game/create-account.html')
 
 
 def do_login(request):
     if 'POST' == request.method:
         post_body = json.loads(request.body)
 
-        email = post_body['email']
+        email = post_body['username']
         password = post_body['password']
         user = authenticate(username=email, password=password)
 
@@ -127,7 +131,7 @@ def do_login(request):
             login(request, user)
             return JsonResponse({})
         else:
-            return create_json_error('Username and password do not match')
+            return create_json_error('Username or password is invalid')
 
     else:
         return render(request, 'game/login.html')
@@ -135,7 +139,7 @@ def do_login(request):
 
 def do_logout(request):
     logout(request)
-    return redirect("index")
+    return redirect("/")
 
 
 def create_json_error(message):
