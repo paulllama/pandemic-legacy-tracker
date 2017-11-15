@@ -1,7 +1,8 @@
 import color
 
+season_1_city_frequency = 1
 season_1_cities = {
-    color.red: [
+    color.red.key: [
         'Beijing',
         'Seoul',
         'Shanghai',
@@ -15,7 +16,7 @@ season_1_cities = {
         'Manila',
         'Sydney',
     ],
-    color.blue: [
+    color.blue.key: [
         'San Francisco',
         'Chicago',
         'Montreal',
@@ -29,7 +30,7 @@ season_1_cities = {
         'Milan',
         'St. Petersburg',
     ],
-    color.yellow: [
+    color.yellow.key: [
         'Los Angeles',
         'Mexico City',
         'Miami',
@@ -43,7 +44,7 @@ season_1_cities = {
         'Khartoum',
         'Johannesburg',
     ],
-    color.black: [
+    color.black.key: [
         'Algiers',
         'Cairo',
         'Baghdad',
@@ -56,5 +57,24 @@ season_1_cities = {
         'Mumbai',
         'Karachi',
         'Riyadh',
+    ]
+}
+
+season_2_city_frequency = 4
+season_2_cities = {
+    color.blue.key: [
+        'New York',
+        'Washington',
+        'London',
+    ],
+    color.yellow.key: [
+        'Jacksonville',
+        'Sao Paulo',
+        'Lagos',
+    ],
+    color.black.key: [
+        'Tripoli',
+        'Cairo',
+        'Istanbul',
     ]
 }

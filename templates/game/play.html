@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-    <div ng-controller="GameController as gameCtrl" ng-init="gameCtrl.startGame({{ campaign.id }})">
+    <div ng-controller="GameController as gameCtrl" ng-init="gameCtrl.startGame({{ campaign.season }})">
 
         <div class="infection-level">
             <div class="infection-level__title">Infection Level</div>

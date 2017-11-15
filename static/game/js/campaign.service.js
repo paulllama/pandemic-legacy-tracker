@@ -7,8 +7,8 @@ class CampaignService {
         return this._getResponseDataPromise("/campaigns/");
     }
 
-    getCities(campaignId) {
-        return this._getResponseDataPromise("/campaigns/" + campaignId + "/cities/");
+    getCities(seasonId) {
+        return this._getResponseDataPromise("/campaigns/season-" + seasonId + "/cities/");
     }
 
     _getResponseDataPromise(url, params) {

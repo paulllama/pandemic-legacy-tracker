@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
-from game.default_cities import season_1_cities
-from django.db.models.signals import post_init
+from game.default_cities import season_1_cities, season_1_city_frequency, season_2_cities, season_2_city_frequency
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 import season
 import color
@@ -28,17 +28,23 @@ class Campaign(models.Model):
         )
 
 
-@receiver(post_init, sender=Campaign)
-def create_default_cities(sender, instance, **kwargs):
-    for city_color, cities in season_1_cities.iteritems():
-        for city_name in cities:
-            city = City()
+@receiver(post_save, sender=Campaign)
+def create_default_cities(sender, instance, created, **kwargs):
+    if created:
+        default_cities = None
+        default_frequency = 0
 
-            city.name = city_name
-            city.color = city_color
-            city.campaign = instance
+        if season.one.key is instance.season:
+            default_cities = season_1_cities
+            default_frequency = season_1_city_frequency
+        elif season.two.key is instance.season:
+            default_cities = season_2_cities
+            default_frequency = season_2_city_frequency
 
-            # city.save()
+        for city_color, cities in default_cities.iteritems():
+            for city_name in cities:
+                city = City(name=city_name, color=city_color, campaign=instance, frequency=default_frequency)
+                city.save()
 
 
 class Score(models.Model):
@@ -55,6 +61,7 @@ class City(models.Model):
     name = models.CharField(max_length=100)
     color = models.CharField(max_length=1, choices=color.all_choices)
     is_faded = models.BooleanField(default=False)
+    frequency = models.IntegerField(default=1)
 
     class Meta:
         verbose_name_plural = "cities"
@@ -67,5 +74,6 @@ class City(models.Model):
             name=self.name,
             color=self.color,
             is_faded=self.is_faded,
-            id=self.id
+            id=self.id,
+            frequency=self.frequency
         )

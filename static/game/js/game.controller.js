@@ -13,10 +13,10 @@ class GameController {
         this.infectionLevel = 0;
     }
 
-    startGame(campaignId) {
-        this.campaignId = campaignId;
+    startGame(season) {
+        this.season = season;
 
-        this.campaignService.getCities(this.campaignId).then(function(cities) {
+        this.campaignService.getCities(this.season).then(function(cities) {
             this.deck = [cities];
             this.discardPile = [];
             this.generateProbabilitiesForFullDeck();

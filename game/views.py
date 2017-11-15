@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
@@ -41,27 +43,19 @@ def campaign_list(request):
 
 
 @login_required
-def play_campaign(request, season_index):
-    campaign = Campaign.objects.filter(user=request.user, season=season_index)
+def play_campaign(request, season_id):
+    season_key = int(season_id)
+    campaign = get_campaign_by_season(season_key, request.user)
 
-    if campaign is None:
-        campaign = Campaign(season=season_index, date_created=timezone.now())
-        campaign.save()
-
-    render(request, "game/play.html", {
+    return render(request, "game/play.html", {
         'campaign': campaign
     })
 
 
-class PlayCampaignView(LoginRequiredMixin, generic.DetailView):
-    template_name = "game/play.html"
-    model = Campaign
-    context_object_name = "campaign"
-
-
 @login_required
-def get_cities(request, campaign_id):
-    cities = [city.to_json() for city in City.objects.filter(campaign=campaign_id)]
+def get_cities(request, season_id):
+    campaign = get_campaign_by_season(int(season_id), request.user)
+    cities = [city.to_json() for city in City.objects.filter(campaign=campaign.id)]
     return JsonResponse(list(cities), safe=False)
 
 
@@ -110,11 +104,11 @@ def create_account(request):
             login(request, new_user)
 
             return JsonResponse({})
-
+        except IntegrityError:
+            return create_json_error('Username already exists')
         except MultiValueDictKeyError:
-            return JsonResponse({
-                'error': 'Username and password are required'
-            })
+            return create_json_error('Username and password are required')
+
     else:
         return render(request, 'game/create-account.html')
 
@@ -140,6 +134,20 @@ def do_login(request):
 def do_logout(request):
     logout(request)
     return redirect("/")
+
+
+def get_campaign_by_season(season_key, user):
+    campaign = None
+
+    try:
+        campaign = Campaign.objects.get(user=user, season=season_key)
+
+    except ObjectDoesNotExist:
+        campaign = Campaign(season=season_key, date_created=timezone.now(), user=user)
+        campaign.save()
+
+    finally:
+        return campaign
 
 
 def create_json_error(message):
