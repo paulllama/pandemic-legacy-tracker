@@ -2,4 +2,6 @@
 .sass-cache/
 **/__pycache__/
 *.css
+*.css.map
 *.pyc
+*.sqlite3
