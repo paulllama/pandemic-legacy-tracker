@@ -1,6 +1,11 @@
 <div class="city-row" ng-class="city.is_faded ? '' : city.color">
-    <div class="city-row__icon"></div>
-
-    <div class="city-row__name" ng-bind="city.name"></div>
-    <div class="city-row__actions"></div>
+    <div class="city-row__text">
+        <div class="city-row__icon" ng-bind="city.frequency"></div>
+        <div class="city-row__name" ng-bind="city.name"></div>
+    </div>
+    <div ng-show="probabilities"
+     class="city-row__probabilities">
+        <span ng-repeat="probability in probabilities track by $index"
+              class="city-row__probabilities__percent">{{ probability }}%</span>
+    </div>
 </div>

@@ -82,12 +82,12 @@ a {
             bottom: -$underline-size;
             z-index: 0;
 
-            @include transition($properties: opacity bottom);
+            @include transition($properties: opacity background);
         }
 
         &:hover {
             &:before {
-                bottom: -2 * $underline-size;
+                background: $color-city-yellow;
                 opacity: 1;
             }
         }

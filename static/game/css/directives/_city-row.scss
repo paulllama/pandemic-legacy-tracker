@@ -2,60 +2,100 @@
 @import "../css3";
 
 .city-row {
-    $city-row-height: 2.5em;
+    $city-row-height: 4.5em;
     $city-row-border-radius: 0.25em;
     $city-row-border-width: 0.1em;
+    $city-row-side-padding: 0.75em;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     font-size: 1rem;
-    height: $city-row-height;
     border-radius: $city-row-border-radius;
     color: white;
-    line-height: $city-row-height;
     margin-bottom: 0.5em;
     cursor: pointer;
     letter-spacing: 0.1em;
-    width: 13em;
+    width: 17em;
     text-transform: uppercase;
+    overflow: hidden;
+    border: 0.1em solid;
+    @include transition($properties: border);
 
-    @include transition($properties: background);
+    .city-row__text {
+        padding: 0.5em $city-row-side-padding;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 1.15rem;
+        @include transition($properties: background);
+    }
 
     .city-row__icon {
-        font-size: 1em;
-        margin-right: 0.7em;
-        background: rgba(#fff, 0.3);
+        font-size: inherit;
+        margin-right: 0.65em;
         color: white;
-        width: $city-row-height - $city-row-border-width;
-        height: $city-row-height - $city-row-border-width;
         text-align: center;
 
         &:before {
             @include font-awesome($fa-var-bug);
-            font-size: 1.5em;
         }
     }
 
     .city-row__name {
+        font-size: inherit;
+    }
 
+    .city-row__probabilities {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        overflow: hidden;
+        @include transition($properties: background);
+
+        .city-row__probabilities__percent {
+            text-align: right;
+            line-height: 1rem;
+
+            $max-probabilities: 4;
+            @for $i from 1 to $max-probabilities {
+                &:nth-child(#{$i}) {
+                    $percent-line-height: 1 - 0.15 * ($i - 1);
+
+                    padding: (0.6em / $percent-line-height) $city-row-side-padding;
+                    background: rgba(0, 0, 0, $i * 0.075);
+                    font-size: $percent-line-height * 1rem;
+                    color: rgba($color-white, 1 - $i * 0.15);
+                    flex: ($max-probabilities - $i) 0;
+                }
+            }
+        }
     }
 
     @mixin city-row-color($color) {
-        background: rgba($color, 0.25);
-        border: 0.1em solid rgba(lighten($color, 10%), 0.5);
+        $opacity-base: 0.5;
+        $opacity-hover: 0.9;
 
-        .city-row__icon {
-            background: rgba($color, 0.5);
+        border-color: rgba($color, $opacity-base);
+        background: rgba($color, $opacity-base);
 
-            &:before {
-                @include font-awesome($fa-var-map-marker);
-                font-size: 1.3em;
-            }
+        .city-row__text {
+            background: rgba($color, $opacity-base);
+        }
 
+        .city-row__icon:before {
+            @include font-awesome($fa-var-map-marker);
         }
 
         &:hover {
-            background: rgba($color, 0.75);
+            border-color: rgba($color, $opacity-hover);
+
+            .city-row__probabilities {
+                background: rgba($color, 0.35);
+            }
+
+            .city-row__text {
+                background: rgba($color, $opacity-hover);
+            }
         }
 
 

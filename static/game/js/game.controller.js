@@ -18,14 +18,14 @@ class GameController {
 
         this.campaignService.getCities(this.season).then(function(cities) {
             this.deck = [cities];
-            this.discardPile = [];
-            this.generateProbabilitiesForFullDeck();
+            this.discardPile = {};
+            this.probabilityCache = {}; //this.generateProbabilitiesForFullDeck();
         }.bind(this));
     }
 
     playCityCard(city) {
         this.moveCityToDiscardFromDeckSection(0, city);
-        this.generateProbabilitiesForFullDeck();
+        this.probabilityCache = {}; //this.generateProbabilitiesForFullDeck();
     }
 
     submitEpidemicForm(cityList) {
@@ -37,13 +37,13 @@ class GameController {
     triggerEpidemic(city) {
         this.moveCityToDiscardFromDeckSection(this.deck.length - 1, city);
 
-        let discardCopy = this.discardPile.slice();
+        let discardCopy = Object.values(this.discardPile);
         this.deck.splice(0, 0, discardCopy);
 
         this.infectionLevel++;
-        this.discardPile = [];
+        this.discardPile = {};
         this.closeEpidemicModal();
-        this.generateProbabilitiesForFullDeck();
+        this.probabilityCache = {}; //this.generateProbabilitiesForFullDeck();
     }
 
     get infectionAmount() {
@@ -60,7 +60,96 @@ class GameController {
         console.log(this.predictionsForDeckSection);
     }
 
-    generateProbabilitiesForDeckSection(deckSectionIndex) {
+    getProbabilitiesForDeckSectionAndFrequency(deckSection, frequency) {
+        let probabilityCacheHash = deckSection + "-" + frequency;
+
+        if (!this.probabilityCache[probabilityCacheHash]) {
+            let probabilities = this.generateProbabilities(deckSection, frequency);
+            let hasAtLeastOnePrediction = false;
+
+            // Check to see that there is at least 1 prediction
+            for (let i = 0; i < probabilities.length; i++) {
+                if (probabilities[i] !== 0) {
+                    hasAtLeastOnePrediction = true;
+                    break;
+                }
+            }
+
+            // If all the predictions are 0, just return an empty array
+            if (hasAtLeastOnePrediction) {
+                this.probabilityCache[probabilityCacheHash] = probabilities;
+            }
+            else {
+                this.probabilityCache[probabilityCacheHash] = [];
+            }
+        }
+
+        return this.probabilityCache[probabilityCacheHash];
+    }
+
+
+    generateProbabilities(deckSection, frequency) {
+        let cardsBeforeSection = 0;
+        let probabilities = [];
+        let cardsPicked = 0;
+        let cardsInSection = this.getSizeOfSection(deckSection);
+
+        for (let section = 0; section < deckSection; section++) {
+            cardsBeforeSection += this.getSizeOfSection(section);
+        }
+
+        while (probabilities.length < NUM_PREDICTIONS && cardsInSection > 0) {
+            // If the next set is not even in this section, add 0
+            if (cardsPicked + this.infectionAmount <= cardsBeforeSection) {
+                probabilities.push(0);
+                cardsPicked += this.infectionAmount;
+            }
+            // Else we have the chance to pull this card
+            else {
+                // The city has to get picked
+                if (cardsInSection < this.infectionAmount) {
+                    probabilities.push(100);
+                }
+                else {
+                    let probabilityToNotChoose = 1;
+                    /*
+                      n - f       n - 1 - f       n - 2 - f
+                     -------  *  -----------  *  ----------- * ...
+                        n           n - 1           n - 2
+                    */
+                    for (let chosenInSet = 0; chosenInSet < this.infectionAmount; chosenInSet++) {
+                        probabilityToNotChoose *= (cardsInSection - chosenInSet - frequency) / (cardsInSection - chosenInSet);
+                    }
+
+                    let probability = Math.min(1.0 - probabilityToNotChoose, 1.0);
+                    let decimalPlaceAdjust = Math.pow(10, MAX_DECIMAL_PLACES);
+                    probabilities.push(Math.round(probability * 100 * decimalPlaceAdjust) / decimalPlaceAdjust);
+                }
+
+                if (probabilities[probabilities.length - 1] === 100) {
+                    break;
+                }
+
+                cardsInSection -= this.infectionAmount;
+            }
+        }
+
+        return probabilities;
+    }
+
+    getSizeOfSection(deckSectionIndex) {
+        let section = this.deck[deckSectionIndex];
+        let numCards = 0;
+
+        for (let cityIndex = 0; cityIndex < section.length; cityIndex++) {
+            let city = section[cityIndex];
+            numCards += city.frequency;
+        }
+
+        return numCards;
+    }
+
+    OLDgenerateProbabilitiesForDeckSection(deckSectionIndex) {
         let set = 0;
         let offset = 0;
         let totalPicked = 0;
@@ -124,16 +213,27 @@ class GameController {
             return;
         }
 
-        // Pull the city out of the top deck section
-        this.deck[sectionIndex].splice(cardIndex, 1);
+        // Lower the amount of this card
+        this.deck[sectionIndex][cardIndex].frequency--;
+
+        // If it was the last one remove it
+        if (this.deck[sectionIndex][cardIndex].frequency === 0) {
+            this.deck[sectionIndex].splice(cardIndex, 1);
+        }
 
         // If the section is empty, delete it
         if (this.deck[sectionIndex].length === 0) {
             this.deck.splice(0, 1);
         }
 
-        // Put the city on the top of the discard pile
-        this.discardPile.splice(0, 0, city);
+        // If this city is not in the discard already, add it
+        if (!this.discardPile[city.name]) {
+            let cityCopy = angular.copy(city);
+            cityCopy.frequency = 0;
+            this.discardPile[city.name] = cityCopy;
+        }
+
+        this.discardPile[city.name].frequency++;
         this.deckSearchInput = "";
     }
 

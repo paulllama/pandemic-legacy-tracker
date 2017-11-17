@@ -15,10 +15,13 @@
             Pandemic Legacy Tracker
         </div>
         <div class="nav__links">
+            {% if request.user.is_active %}
+                <a href="{% url 'game:campaigns' %}" class="nav__link">{{ request.user.username }}</a>
+            {% endif %}
+
             <a href="{% url 'game:about' %}" class="nav__link">About</a>
 
             {% if request.user.is_active %}
-                <a href="{% url 'game:campaigns' %}" class="nav__link">Campaigns</a>
                 <a href="{% url 'game:logout' %}" class="nav__link">Logout</a>
             {% endif %}
 
