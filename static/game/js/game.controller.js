@@ -10,22 +10,35 @@ class GameController {
         this.showEpidemicModal = false;
         this.epidemicSearch = "";
         this.deckSearchInput = "";
-        this.infectionLevel = 0;
     }
 
     startGame(season) {
         this.season = season;
 
-        this.campaignService.getCities(this.season).then(function(cities) {
-            this.deck = [cities];
-            this.discardPile = {};
-            this.probabilityCache = {}; //this.generateProbabilitiesForFullDeck();
+        this.campaignService.loadGameState(this.season).then(function(gameData) {
+            this.deck = gameData.deck;
+            this.discardPile = gameData.discard;
+            this.infectionLevel = gameData.infectionLevel;
+
+            this.probabilityCache = {};
+        }.bind(this));
+    }
+
+    resetGame() {
+        this.campaignService.clearGameData(this.season).then(function() {
+            this.startGame(this.season);
         }.bind(this));
     }
 
     playCityCard(city) {
         this.moveCityToDiscardFromDeckSection(0, city);
-        this.probabilityCache = {}; //this.generateProbabilitiesForFullDeck();
+        this.probabilityCache = {};
+
+        this.campaignService.saveGameState(this.season, {
+            deck: this.deck,
+            discard: this.discardPile,
+            infectionLevel: this.infectionLevel
+        });
     }
 
     submitEpidemicForm(cityList) {

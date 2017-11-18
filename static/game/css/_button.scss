@@ -49,5 +49,17 @@
     &.button--danger {
         @include button-colors($color-city-red, $color-city-yellow);
     }
+
+    &.button--small {
+        max-width: none;
+        width: auto;
+        padding: 0.65em 1em;
+        font-size: 1rem;
+        margin-right: 1em;
+
+        &:before, &:after {
+            display: none;
+        }
+    }
 }
 

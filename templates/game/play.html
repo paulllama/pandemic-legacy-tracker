@@ -15,13 +15,21 @@
 {% block content %}
     <div ng-controller="GameController as gameCtrl" ng-init="gameCtrl.startGame({{ campaign.season }})">
 
-        <div class="infection-level">
-            <div class="infection-level__title">Infection Level</div>
-            <div class="infection-level__amounts">
-                <div ng-repeat="value in gameCtrl.INFECTION_AMOUNTS track by $index"
-                     class="infection-level__amounts__value"
-                     ng-class="{'current': $index === gameCtrl.infectionLevel}"
-                     ng-bind="value"></div>
+        <div class="game-nav">
+            <div>
+                <div class="game-nav__title">Infection Level</div>
+                <div class="infection-level">
+                    <div ng-repeat="value in gameCtrl.INFECTION_AMOUNTS track by $index"
+                         class="infection-level__value"
+                         ng-class="{'current': $index === gameCtrl.infectionLevel}"
+                         ng-bind="value"></div>
+                </div>
+            </div>
+            <div class="game-nav__actions">
+                <div class="game-nav__title">Season <span ng-bind="gameCtrl.season"></span></div>
+
+                <a class="button button--small" href="#">Edit Cities</a>
+                <a class="button button--small" ng-click="gameCtrl.resetGame()">Reset Game</a>
             </div>
         </div>
 

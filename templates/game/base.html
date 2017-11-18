@@ -31,6 +31,7 @@
 
     {% block content %}{% endblock %}
     <input type="hidden" id="csrf_token" value="{{ csrf_token }}" />
+    <input type="hidden" id="username" value="{{ request.user.username }}" />
 
 {#    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>#}
     <script src="{% static 'angular.js' %}"></script>
