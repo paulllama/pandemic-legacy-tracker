@@ -23,3 +23,18 @@ all_choices = (
     black.to_tuple(),
     yellow.to_tuple(),
 )
+
+
+def parse_string_to_color(str_to_parse):
+    key = str_to_parse.lower().strip(' ')
+
+    return {
+        'r': red,
+        'red': red,
+        'u': blue,
+        'blue': blue,
+        'b': black,
+        'black': black,
+        'y': yellow,
+        'yellow': yellow
+    }[key]

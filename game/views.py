@@ -14,6 +14,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views import generic
 import json
 import season
+from game.color import parse_string_to_color
 from game.models import City, Campaign, Score
 from pandemic_legacy_tracker_com.settings import MIN_PASSWORD_LENGTH
 
@@ -43,6 +44,17 @@ def campaign_list(request):
 
 
 @login_required
+def manage_cities(request, season_id):
+    season_int = int(season_id)
+    cities = get_cities_for_season(season_int, request.user)
+
+    return render(request, "game/manage-cities.html", {
+        'cities': cities,
+        'season': season_int
+    })
+
+
+@login_required
 def play_campaign(request, season_id):
     season_key = int(season_id)
     campaign = get_campaign_by_season(season_key, request.user)
@@ -54,13 +66,61 @@ def play_campaign(request, season_id):
 
 @login_required
 def get_cities(request, season_id):
-    campaign = get_campaign_by_season(int(season_id), request.user)
-    cities = [city.to_json() for city in City.objects.filter(campaign=campaign.id)]
-    return JsonResponse(list(cities), safe=False)
+    # If creating a city
+    if 'POST' == request.method:
+        season_key = int(season_id)
+        campaign = get_campaign_by_season(season_key, request.user)
+
+        post_body = json.loads(request.body)
+
+        name = post_body['name']
+        color_str = post_body['color']
+        frequency_str = post_body['frequency']
+
+        color = parse_string_to_color(color_str)
+        frequency = int(frequency_str)
+
+        city = City(name=name, color=color.key, frequency=frequency, campaign=campaign)
+        city.save()
+
+        return JsonResponse(city.to_json(), safe=False)
+    # Else getting cities
+    else:
+        season_int = int(season_id)
+        cities = [city.to_json() for city in get_cities_for_season(season_int, request.user)]
+        return JsonResponse(list(cities), safe=False)
 
 
 @login_required
-def toggle_fade(request, campaign_id, city_id):
+def get_or_update_city(request, season_id, city_id):
+    city = get_object_or_404(City, id=city_id)
+
+    if "POST" == request.method:
+        post_body = json.loads(request.body)
+
+        if post_body['delete']:
+            city.delete()
+        else:
+            name = post_body['name']
+            color = post_body['color']
+            frequency = post_body['frequency']
+
+            if name:
+                city.name = name
+            if color:
+                city.color = color
+            if frequency:
+                city.frequency = frequency
+
+            city.save()
+        return JsonResponse({})
+
+    else:
+        return JsonResponse(city.to_json())
+
+
+@login_required
+def toggle_fade(request, season_id, city_id):
     city = get_object_or_404(City, id=city_id)
     city.is_faded = not city.is_faded
     city.save()
@@ -149,6 +209,10 @@ def get_campaign_by_season(season_key, user):
     finally:
         return campaign
 
+
+def get_cities_for_season(season_key, user):
+    campaign = get_campaign_by_season(season_key, user)
+    return City.objects.filter(campaign=campaign.id)
 
 def create_json_error(message):
     return JsonResponse({

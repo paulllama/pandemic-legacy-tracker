@@ -28,7 +28,7 @@
             <div class="game-nav__actions">
                 <div class="game-nav__title">Season <span ng-bind="gameCtrl.season"></span></div>
 
-                <a class="button button--small" href="#">Edit Cities</a>
+                <a class="button button--small" href="{% url 'game:manage_cities' season_id=campaign.season %}">Edit Cities</a>
                 <a class="button button--small" ng-click="gameCtrl.resetGame()">Reset Game</a>
             </div>
         </div>

@@ -11,15 +11,19 @@
     flex-direction: column;
     font-size: 1rem;
     border-radius: $city-row-border-radius;
-    color: white;
     margin-bottom: 0.5em;
     cursor: pointer;
     letter-spacing: 0.1em;
     width: 17em;
     text-transform: uppercase;
     overflow: hidden;
-    border: 0.1em solid;
-    @include transition($properties: border);
+    border: 0.2em solid transparent;
+    background: currentColor;
+    @include transition($properties: border background);
+
+    &:hover {
+        background: currentColor;
+    }
 
     .city-row__text {
         padding: 0.5em $city-row-side-padding;
@@ -27,6 +31,7 @@
         flex-direction: row;
         align-items: center;
         font-size: 1.15rem;
+        color: white;
         @include transition($properties: background);
     }
 
@@ -43,6 +48,78 @@
 
     .city-row__name {
         font-size: inherit;
+        flex-grow: 1;
+    }
+
+    .city-row__input {
+        flex-grow: 1;
+        font-size: inherit;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+
+        input {
+            width: 100%;
+            text-transform: uppercase;
+            font-size: inherit;
+            border: none;
+            margin: 0;
+            padding: 0.1em 0.5em;
+        }
+
+        &.--short {
+            flex-basis: 3.5em;
+            margin-left: 0;
+            margin-right: 0;
+
+            input {
+                text-align: right;
+            }
+        }
+    }
+
+    .city-row__button {
+        $city-button-color: $color-white;
+
+        background: none;
+        border: none;
+        font-size: inherit;
+        cursor: pointer;
+        color: $city-button-color;
+
+        &:hover {
+            color: darken($city-button-color, 10%);
+        }
+
+        &:before {
+            color: inherit;
+            @include transition($properties: color);
+        }
+
+        @mixin city-button($icon-var, $hover-color) {
+            &:before {
+                @include font-awesome($icon-var);
+            }
+
+            &:hover {
+                color: mix($hover-color, $city-button-color, 75%);
+            }
+        }
+
+        &.--save {
+            @include city-button($fa-var-check, $color-city-faded);
+        }
+
+        &.--cancel {
+            @include city-button($fa-var-undo, $color-city-red);
+        }
+
+        &.--edit {
+            @include city-button($fa-var-edit, $color-city-black);
+        }
+
+        &.--delete {
+            @include city-button($fa-var-trash, $color-city-black);
+        }
     }
 
     .city-row__probabilities {
@@ -72,38 +149,27 @@
     }
 
     @mixin city-row-color($color) {
-        $opacity-base: 0.5;
-        $opacity-hover: 0.9;
+        $opacity-base: 0.75;
+        $opacity-hover: 1;
 
-        border-color: rgba($color, $opacity-base);
-        background: rgba($color, $opacity-base);
-
-        .city-row__text {
-            background: rgba($color, $opacity-base);
-        }
+        color: rgba($color, 0.7);
 
         .city-row__icon:before {
             @include font-awesome($fa-var-map-marker);
         }
 
         &:hover {
-            border-color: rgba($color, $opacity-hover);
-
-            .city-row__probabilities {
-                background: rgba($color, 0.35);
-            }
-
-            .city-row__text {
-                background: rgba($color, $opacity-hover);
-            }
+            color: rgba($color, 0.95);
         }
 
-
+        &:not(.VIEW) {
+            background: #CCC;
+            border-color: currentColor;
+        }
     }
 
     &.r { @include city-row-color($color-city-red); }
     &.u { @include city-row-color($color-city-blue); }
     &.b { @include city-row-color($color-city-black); }
     &.y { @include city-row-color($color-city-yellow); }
-
 }

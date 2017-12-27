@@ -1,0 +1,65 @@
+@import "base";
+@import "card";
+@import "directives/city-row";
+@import "../text-input-with-label/text-input-with-label";
+
+.create-city {
+    @include card();
+    max-width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2em;
+
+    .create-city__title {
+        margin-bottom: 0.5em;
+        color: $color-white;
+        font-size: 1.25em;
+    }
+
+    .create-city__form {
+        display: flex;
+        flex-direction: row;
+
+        input, select, button {
+            font-size: 1em;
+        }
+
+        .create-city__form__input {
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-right: 0.5em;
+            padding: 0.35em 0.6em;
+            border: none;
+            outline: none;
+            border-radius: 0;
+            text-transform: uppercase;
+
+            &.--number {
+                width: 4em;
+            }
+
+            &.--color {
+
+            }
+        }
+
+        .button {
+            margin-bottom: 0;
+            max-width: 8rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            text-align: center;
+        }
+    }
+}
+
+.city-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .city-row {
+        margin: 0 0.5em 1em;
+    }
+}

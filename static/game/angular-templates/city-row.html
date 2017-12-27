@@ -1,7 +1,37 @@
-<div class="city-row" ng-class="city.is_faded ? '' : city.color">
-    <div class="city-row__text">
+<div class="city-row" ng-class="[cityColorClass, state]">
+    <div ng-show="'VIEW' === state"
+         class="city-row__text">
         <div class="city-row__icon" ng-bind="city.frequency"></div>
         <div class="city-row__name" ng-bind="city.name"></div>
+
+        <button ng-show="editable"
+                class="city-row__button --edit"
+                ng-click="showEditState()"></button>
+        <button ng-show="editable"
+                class="city-row__button --delete"
+                ng-click="showDeleteState()"></button>
+    </div>
+    <div ng-show="'EDIT' === state"
+         class="city-row__text">
+        <div class="city-row__input --short">
+            <input type="number" ng-model="newCity.frequency" />
+        </div>
+        <div class="city-row__input">
+            <input class="city-row__input" type="text" ng-model="newCity.name" />
+        </div>
+
+        <button class="city-row__button --save" ng-click="updateCity()"></button>
+        <button class="city-row__button --cancel" ng-click="showViewState()"></button>
+    </div>
+    <div ng-show="'DELETE' === state"
+         class="city-row__text">
+        <div class="city-row__name">Are you sure?</div>
+        <button class="city-row__button --delete" ng-click="deleteCity()"></button>
+        <button class="city-row__button --cancel" ng-click="showViewState()"></button>
+    </div>
+    <div ng-show="'LOADING' === state"
+         class="city-row__text">
+
     </div>
     <div ng-show="probabilities"
      class="city-row__probabilities">
