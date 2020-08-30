@@ -3,10 +3,11 @@ import InfectionLevel from './InfectionLevel'
 
 const Nav = ({
 	resetGame,
+	infectionLevel,
 }) => {
 	return (
 		<div>
-			<InfectionLevel level={1} />
+			<InfectionLevel level={infectionLevel} />
 			<div>
 					<div>Season 1</div>
 					<button onClick={resetGame}>Reset Game</button>

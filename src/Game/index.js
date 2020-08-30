@@ -1,8 +1,15 @@
 import React from 'react'
+import styled from 'styled-components'
+
 import Nav from './Nav'
 import CityCards from './CityCards'
 import EpidemicModal from './EpidemicModal'
 import { INFECTION_AMOUNTS, NUM_PREDICTIONS, MAX_DECIMAL_PLACES } from './config'
+
+const Container = styled.div`
+	background: #1B3A4E;
+	color: white;
+`
 
 const Game = () => {
 	const [probabilityCache, setProbabilityCache] = React.useState({})
@@ -175,8 +182,8 @@ const Game = () => {
 	}
 
 	return (
-		<div>
-			<Nav />
+		<Container>
+			<Nav infectionLevel={infectionLevel} />
 			<CityCards
 				deck={deck}
 				discardPile={discardPile}
@@ -185,7 +192,7 @@ const Game = () => {
 				playCityCard={playCityCard}
 			/>
 			{isShowingEpidemicModal && <EpidemicModal />}
-		</div>
+		</Container>
 	)
 }
 
