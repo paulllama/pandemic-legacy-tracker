@@ -19,7 +19,7 @@ const Container = styled.div`
 `
 
 const ModalMask = styled.div`
-	background: #000000AA;
+	background: #000000BB;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -32,9 +32,31 @@ const ModalBody = styled.div`
 	max-width: 30em;
 	max-height: 90vh;
 	width: 100%;
-	background: white;
+	background: #394756;
 	border-radius: 0.2em;
 	padding: 1em;
+	display: flex;
+	flex-direction: column;
+`
+
+const ModalTitle = styled.div`
+	font-size: 1.5em;
+	text-transform: uppercase;
+	color: white;
+	margin-bottom: 0.75em;
+`
+
+const SearchInput = styled.input`
+	font-size: 1em;
+	padding: 0.25em 0.5em;
+	background: #FFFFFFCC;
+	border: 0;
+	border-radius: 0.2em;
+	margin-bottom: 1em;
+
+	&:focus {
+		outline: none;
+	}
 `
 
 const EpidemicModal = ({ isVisible, close, deck, triggerEpidemic }) => {
@@ -43,19 +65,28 @@ const EpidemicModal = ({ isVisible, close, deck, triggerEpidemic }) => {
 	const filteredCities = search
 		? bottomDeckSection.filter(city => city.name.indexOf(search) >= 0)
 		: []
+	const hasNoResults = search && filteredCities.length === 0
 
 	const searchChange = event => {
 		setSearch(event.target.value)
 	}
+	const closeAndReset = () => {
+		setSearch('')
+		close()
+	}
 
 	return (
 		<Container isVisible={isVisible}>
-			<ModalMask onClick={close}/>
+			<ModalMask onClick={closeAndReset}/>
 			<ModalBody>
-				<input value={search} onChange={searchChange} />
-				{filteredCities.map(city => (
-					<City city={city} onClick={triggerEpidemic} />
-				))}
+				<ModalTitle>Epidemic!</ModalTitle>
+				<SearchInput value={search} onChange={searchChange} placeholder="Search for a city" />
+				{hasNoResults
+					? <span>No cities found</span>
+					: filteredCities.map(city => (
+						<City key={city.name} city={city} onClick={triggerEpidemic} />
+					))
+				}
 			</ModalBody>
 		</Container>
 	)
