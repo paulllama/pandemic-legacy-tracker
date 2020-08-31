@@ -37,7 +37,7 @@ const SiteNav = () => (
 	<Container>
 		<Logo>Pandemic Legacy Tracker</Logo>
 		<CreatedBy>
-			Created by <a href="//paularmer.me" rel="noopener noreferrer" target="_blank">Paul Armer</a>
+			Created by <a href="//github.com/armerpaul" rel="noopener noreferrer" target="_blank">Paul Armer</a>
 		</CreatedBy>
 	</Container>
 )
