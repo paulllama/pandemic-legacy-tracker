@@ -19,7 +19,7 @@ export const PrimaryButton = styled.button`
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;
-	border-radius: 0.25em;
+	border-radius: 0.15em;
 	background: ${ACTIVE_COLOR};
 	border: none;
 	padding: 0.75em 0.5em 0.45em;

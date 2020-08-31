@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Nav from './Nav'
-import CityCards from './CityCards'
+import DeckAndDiscard from './DeckAndDiscard'
 import EpidemicModal from './EpidemicModal'
 import {
 	INFECTION_AMOUNTS,
@@ -13,6 +13,7 @@ import {
 
 const Container = styled.div`
 	background: #394756;
+	padding: 1em 1em 4em;
 
 	* {
 		font-family: 'Fjalla One', sans-serif;
@@ -25,7 +26,6 @@ const Game = () => {
 	const [discardPile, setDiscardPile] = React.useState({})
 	const [infectionLevel, setInfectionLevel] = React.useState(0)
 	const [isShowingEpidemicModal, setIsShowingEpidemicModal] = React.useState(false)
-	const [epidemicSearch, setEpidemicSearch] = React.useState('')
 
 	const infectionAmount = INFECTION_AMOUNTS[infectionLevel]
 
@@ -68,7 +68,6 @@ const Game = () => {
 
 	const openEpidemicModal = () => {
 		setIsShowingEpidemicModal(true)
-		setEpidemicSearch('')
 	}
 
 	const closeEpidemicModal = () => {
@@ -96,12 +95,6 @@ const Game = () => {
 		setProbabilityCache({}) // this.generateProbabilitiesForFullDeck()
 
 		closeEpidemicModal()
-	}
-
-	const submitEpidemicForm = cityList => {
-		if (cityList && cityList.length === 1) {
-			triggerEpidemic(cityList[0]);
-		}
 	}
 
 	const getSizeOfSection = deckSectionIndex => {
@@ -203,14 +196,19 @@ const Game = () => {
 				openEpidemicModal={openEpidemicModal}
 				resetGame={resetGame}
 			/>
-			<CityCards
+			<DeckAndDiscard
 				deck={deck}
 				discardPile={discardPile}
 				openEpidemicModal={openEpidemicModal}
 				getProbabilities={getProbabilitiesForDeckSectionAndFrequency}
 				playCityCard={playCityCard}
 			/>
-			{isShowingEpidemicModal && <EpidemicModal />}
+			<EpidemicModal
+				deck={deck}
+				isVisible={isShowingEpidemicModal}
+				close={closeEpidemicModal}
+				triggerEpidemic={triggerEpidemic}
+			/>
 		</Container>
 	)
 }
