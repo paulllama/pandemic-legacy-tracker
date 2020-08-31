@@ -1,18 +1,26 @@
 import React from 'react'
+import styled from 'styled-components'
+
 import InfectionLevel from './InfectionLevel'
+import { TextButton } from '../Buttons'
+
+const Container = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 0.5em;
+`
 
 const Nav = ({
 	resetGame,
 	infectionLevel,
+	openEpidemicModal,
 }) => {
 	return (
-		<div>
-			<InfectionLevel level={infectionLevel} />
-			<div>
-					<div>Season 1</div>
-					<button onClick={resetGame}>Reset Game</button>
-			</div>
-		</div>
+		<Container>
+			<InfectionLevel level={infectionLevel} openEpidemicModal={openEpidemicModal} />
+			<TextButton onClick={resetGame}>Reset Game</TextButton>
+		</Container>
 	)
 }
 

@@ -8,7 +8,10 @@ import { INFECTION_AMOUNTS, NUM_PREDICTIONS, MAX_DECIMAL_PLACES } from './config
 
 const Container = styled.div`
 	background: #1B3A4E;
-	color: white;
+
+	* {
+		font-family: 'Fjalla One', sans-serif;
+	}
 `
 
 const Game = () => {
@@ -183,7 +186,7 @@ const Game = () => {
 
 	return (
 		<Container>
-			<Nav infectionLevel={infectionLevel} />
+			<Nav infectionLevel={infectionLevel} openEpidemicModal={openEpidemicModal} />
 			<CityCards
 				deck={deck}
 				discardPile={discardPile}
