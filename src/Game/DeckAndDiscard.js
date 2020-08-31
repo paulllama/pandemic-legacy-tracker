@@ -56,7 +56,7 @@ const CityCards = ({
 			{deck.map((deckSection, sectionIndex) => (
 				<CardGroup key={sectionIndex}>
 					<CardGroupTitle>
-						{sectionIndex === 0 ? 'Top of deck' : `Section ${sectionIndex + 1}`}
+						{sectionIndex === 0 ? 'Top deck section' : `Section ${sectionIndex + 1}`}
 					</CardGroupTitle>
 					{deckSection.map((city, index) => (
 						<City
