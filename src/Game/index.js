@@ -12,7 +12,7 @@ import {
 } from './config'
 
 const Container = styled.div`
-	background: #1B3A4E;
+	background: #394756;
 
 	* {
 		font-family: 'Fjalla One', sans-serif;
