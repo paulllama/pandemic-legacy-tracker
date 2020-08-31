@@ -14,10 +14,6 @@ import {
 const Container = styled.div`
 	background: #394756;
 	padding: 1em 1em 4em;
-
-	* {
-		font-family: 'Fjalla One', sans-serif;
-	}
 `
 
 const Game = () => {

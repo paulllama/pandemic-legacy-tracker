@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Game from './Game';
+import SiteNav from './SiteNav';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
+    <SiteNav />
     <Game />
   </React.StrictMode>,
   document.getElementById('root')
