@@ -4,7 +4,12 @@ import styled from 'styled-components'
 import Nav from './Nav'
 import CityCards from './CityCards'
 import EpidemicModal from './EpidemicModal'
-import { INFECTION_AMOUNTS, NUM_PREDICTIONS, MAX_DECIMAL_PLACES } from './config'
+import {
+	INFECTION_AMOUNTS,
+	NUM_PREDICTIONS,
+	MAX_DECIMAL_PLACES,
+	SEASON_1_CITIES,
+} from './config'
 
 const Container = styled.div`
 	background: #1B3A4E;
@@ -16,7 +21,7 @@ const Container = styled.div`
 
 const Game = () => {
 	const [probabilityCache, setProbabilityCache] = React.useState({})
-	const [deck, setDeck] = React.useState([])
+	const [deck, setDeck] = React.useState([SEASON_1_CITIES])
 	const [discardPile, setDiscardPile] = React.useState({})
 	const [infectionLevel, setInfectionLevel] = React.useState(0)
 	const [isShowingEpidemicModal, setIsShowingEpidemicModal] = React.useState(false)
@@ -100,7 +105,7 @@ const Game = () => {
 	}
 
 	const getSizeOfSection = deckSectionIndex => {
-		let section = this.deck[deckSectionIndex];
+		let section = deck[deckSectionIndex];
 		let numCards = 0;
 
 		for (let cityIndex = 0; cityIndex < section.length; cityIndex++) {
@@ -184,9 +189,20 @@ const Game = () => {
 		return probabilityCache[probabilityCacheHash];
 	}
 
+	const resetGame = () => {
+		setDeck([SEASON_1_CITIES])
+		setDiscardPile([])
+		setInfectionLevel(0)
+		setProbabilityCache({})
+	}
+
 	return (
 		<Container>
-			<Nav infectionLevel={infectionLevel} openEpidemicModal={openEpidemicModal} />
+			<Nav
+				infectionLevel={infectionLevel}
+				openEpidemicModal={openEpidemicModal}
+				resetGame={resetGame}
+			/>
 			<CityCards
 				deck={deck}
 				discardPile={discardPile}
