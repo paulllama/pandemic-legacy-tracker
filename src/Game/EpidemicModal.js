@@ -74,6 +74,10 @@ const EpidemicModal = ({ isVisible, close, deck, triggerEpidemic }) => {
 		setSearch('')
 		close()
 	}
+	const triggerEpidemicAndClose = city => {
+		triggerEpidemic(city)
+		closeAndReset()
+	}
 
 	return (
 		<Container isVisible={isVisible}>
@@ -84,7 +88,7 @@ const EpidemicModal = ({ isVisible, close, deck, triggerEpidemic }) => {
 				{hasNoResults
 					? <span>No cities found</span>
 					: filteredCities.map(city => (
-						<City key={city.name} city={city} onClick={triggerEpidemic} />
+						<City key={city.name} city={city} onClick={triggerEpidemicAndClose} />
 					))
 				}
 			</ModalBody>

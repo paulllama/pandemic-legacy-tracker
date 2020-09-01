@@ -1,9 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 
-import Nav from './Nav'
-import DeckAndDiscard from './DeckAndDiscard'
-import EpidemicModal from './EpidemicModal'
+import View from './View'
 import {
 	INFECTION_AMOUNTS,
 	NUM_PREDICTIONS,
@@ -11,17 +8,11 @@ import {
 	SEASON_1_CITIES,
 } from './config'
 
-const Container = styled.div`
-	background: #394756;
-	padding: 1em 1em 4em;
-`
-
 const Game = () => {
 	const [probabilityCache, setProbabilityCache] = React.useState({})
 	const [deck, setDeck] = React.useState([SEASON_1_CITIES])
 	const [discardPile, setDiscardPile] = React.useState({})
 	const [infectionLevel, setInfectionLevel] = React.useState(0)
-	const [isShowingEpidemicModal, setIsShowingEpidemicModal] = React.useState(false)
 
 	const infectionAmount = INFECTION_AMOUNTS[infectionLevel]
 
@@ -30,7 +21,8 @@ const Game = () => {
 
 		// We only want to allow pulling off of specified section
 		if (cardIndex === -1) {
-				return;
+			console.warn(`${city.name} not found in deck section ${sectionIndex}`)
+			return;
 		}
 
 		// Lower the amount of this card
@@ -48,26 +40,16 @@ const Game = () => {
 
 		// If this city is not in the discard already, add it
 		if (!discardPile[city.name]) {
-				let cityCopy = {
+				discardPile[city.name] = {
 					...city,
 					frequency: 0,
 				}
-
-				discardPile[city.name] = cityCopy;
 		}
 
 		discardPile[city.name].frequency++
 
 		setDiscardPile(discardPile)
 		setDeck(deck)
-	}
-
-	const openEpidemicModal = () => {
-		setIsShowingEpidemicModal(true)
-	}
-
-	const closeEpidemicModal = () => {
-		setIsShowingEpidemicModal(false)
 	}
 
 	const playCityCard = city => {
@@ -78,6 +60,10 @@ const Game = () => {
 	}
 
 	const triggerEpidemic = city => {
+		if (!city) {
+			console.error('city required to trigger epidemic')
+		}
+
 		moveCityToDiscardFromDeckSection(deck.length - 1, city);
 
 		const discardCopy = Object.values(discardPile);
@@ -89,8 +75,6 @@ const Game = () => {
 		setInfectionLevel(infectionLevel + 1)
 		setDiscardPile({})
 		setProbabilityCache({}) // this.generateProbabilitiesForFullDeck()
-
-		closeEpidemicModal()
 	}
 
 	const getSizeOfSection = deckSectionIndex => {
@@ -186,26 +170,15 @@ const Game = () => {
 	}
 
 	return (
-		<Container>
-			<Nav
-				infectionLevel={infectionLevel}
-				openEpidemicModal={openEpidemicModal}
-				resetGame={resetGame}
-			/>
-			<DeckAndDiscard
-				deck={deck}
-				discardPile={discardPile}
-				openEpidemicModal={openEpidemicModal}
-				getProbabilities={getProbabilitiesForDeckSectionAndFrequency}
-				playCityCard={playCityCard}
-			/>
-			<EpidemicModal
-				deck={deck}
-				isVisible={isShowingEpidemicModal}
-				close={closeEpidemicModal}
-				triggerEpidemic={triggerEpidemic}
-			/>
-		</Container>
+		<View
+			infectionLevel={infectionLevel}
+			resetGame={resetGame}
+			deck={deck}
+			discardPile={discardPile}
+			getProbabilitiesForDeckSectionAndFrequency={getProbabilitiesForDeckSectionAndFrequency}
+			playCityCard={playCityCard}
+			triggerEpidemic={triggerEpidemic}
+		/>
 	)
 }
 
