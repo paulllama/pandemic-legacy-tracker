@@ -6,6 +6,7 @@ import {
 	NUM_PREDICTIONS,
 	MAX_DECIMAL_PLACES,
 	SEASON_1_CITIES,
+	STORAGE_KEY,
 } from './config'
 
 const Game = () => {
@@ -13,8 +14,49 @@ const Game = () => {
 	const [deck, setDeck] = React.useState([SEASON_1_CITIES])
 	const [discardPile, setDiscardPile] = React.useState({})
 	const [infectionLevel, setInfectionLevel] = React.useState(0)
+	const [lastSaveDate, setLastSaveDate] = React.useState()
 
 	const infectionAmount = INFECTION_AMOUNTS[infectionLevel]
+
+	React.useEffect(() => {
+		const rawSaveData = localStorage.getItem(STORAGE_KEY)
+
+		if (!rawSaveData) {
+			resetGame()
+			return
+		}
+
+		const saveData = JSON.parse(rawSaveData)
+
+		setDeck(saveData.deck)
+		setDiscardPile(saveData.discardPile)
+		setInfectionLevel(saveData.infectionLevel)
+		setLastSaveDate(saveData.date)
+		setProbabilityCache({})
+	}, [])
+
+	const saveGame = () => {
+		const saveData = {
+			date: Date.now(),
+			deck,
+			discardPile,
+			infectionLevel,
+		}
+
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData))
+
+		setLastSaveDate(saveData.date)
+	}
+
+	const resetGame = () => {
+		localStorage.setItem(STORAGE_KEY, "")
+
+		setDeck([SEASON_1_CITIES])
+		setDiscardPile({})
+		setInfectionLevel(0)
+		setProbabilityCache({})
+		setLastSaveDate(null)
+	}
 
 	const moveCityToDiscardFromDeckSection = (sectionIndex, city) => {
 		const cardIndex = deck[sectionIndex].indexOf(city)
@@ -56,7 +98,7 @@ const Game = () => {
 		moveCityToDiscardFromDeckSection(0, city);
 		setProbabilityCache({})
 
-		// TODO SAVE GAME STATE
+		saveGame()
 	}
 
 	const triggerEpidemic = city => {
@@ -74,7 +116,9 @@ const Game = () => {
 
 		setInfectionLevel(infectionLevel + 1)
 		setDiscardPile({})
-		setProbabilityCache({}) // this.generateProbabilitiesForFullDeck()
+		setProbabilityCache({})
+
+		saveGame()
 	}
 
 	const getSizeOfSection = deckSectionIndex => {
@@ -151,22 +195,16 @@ const Game = () => {
 			// If all the predictions are 0, just return an empty array
 			probabilities = hasAtLeastOnePrediction ? probabilities : []
 
-			setProbabilityCache({
-				...probabilityCache,
-				[probabilityCacheHash]: probabilities,
-			})
+			// Disabled for now
+			// setProbabilityCache({
+			// 	...probabilityCache,
+			// 	[probabilityCacheHash]: probabilities,
+			// })
 
 			return probabilities
 		}
 
 		return probabilityCache[probabilityCacheHash];
-	}
-
-	const resetGame = () => {
-		setDeck([SEASON_1_CITIES])
-		setDiscardPile([])
-		setInfectionLevel(0)
-		setProbabilityCache({})
 	}
 
 	return (
@@ -175,6 +213,7 @@ const Game = () => {
 			resetGame={resetGame}
 			deck={deck}
 			discardPile={discardPile}
+			lastSaveDate={lastSaveDate}
 			getProbabilitiesForDeckSectionAndFrequency={getProbabilitiesForDeckSectionAndFrequency}
 			playCityCard={playCityCard}
 			triggerEpidemic={triggerEpidemic}

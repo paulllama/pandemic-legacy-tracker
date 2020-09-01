@@ -49,7 +49,7 @@ const CityCards = ({
 		<Container>
 			<DiscardPile key="Discard Pile">
 				<CardGroupTitle>Discard</CardGroupTitle>
-				{Object.values(discardPile).map(city => <City city={city} />)}
+				{Object.values(discardPile).map(city => <City key={city.name} city={city} />)}
 			</DiscardPile>
 
 			{/* TODO: ADD INPUT SEARCH */}

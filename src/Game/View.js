@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Nav from './Nav'
+import GameControls from './GameControls'
 import DeckAndDiscard from './DeckAndDiscard'
 import EpidemicModal from './EpidemicModal'
 
@@ -18,6 +18,7 @@ const View = ({
 	getProbabilitiesForDeckSectionAndFrequency,
 	playCityCard,
 	triggerEpidemic,
+	lastSaveDate,
 }) => {
 	const [isShowingEpidemicModal, setIsShowingEpidemicModal] = React.useState(false)
 
@@ -31,10 +32,11 @@ const View = ({
 
 	return (
 		<Container>
-			<Nav
+			<GameControls
 				infectionLevel={infectionLevel}
 				openEpidemicModal={openEpidemicModal}
 				resetGame={resetGame}
+				lastSaveDate={lastSaveDate}
 			/>
 			<DeckAndDiscard
 				deck={deck}

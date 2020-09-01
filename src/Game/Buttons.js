@@ -2,11 +2,7 @@ import styled from 'styled-components'
 
 const ACTIVE_COLOR = '#FACD01'
 
-const ButtonBase = styled.button`
-	outline: none;
-`
-
-export const PrimaryButton = styled(ButtonBase)`
+export const PrimaryButton = styled.button`
 	&:before {
 		content: '';
 		display: block;
@@ -19,6 +15,7 @@ export const PrimaryButton = styled(ButtonBase)`
 		top: 0;
 	}
 
+	outline: none;
 	display: block;
 	cursor: pointer;
 	position: relative;
@@ -31,10 +28,9 @@ export const PrimaryButton = styled(ButtonBase)`
 	text-transform: uppercase;
 `
 
-export const TextButton = styled(ButtonBase)`
-	display: block;
+export const TextButton = styled.a`
+	display: inline-block;
 	background: transparent;
-	padding: 0.5em;
 	font-weight: bold;
 	text-transform: uppercase;
 	border: none;
