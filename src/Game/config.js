@@ -11,20 +11,6 @@ export const CITY_COLOR = {
 }
 
 export const CITY_NAMES_BY_COLOR = {
-	[CITY_COLOR.RED]: [
-		'Beijing',
-		'Seoul',
-		'Shanghai',
-		'Hong Kong',
-		'Tokyo',
-		'Osaka',
-		'Taipei',
-		'Bangkok',
-		'Ho Chi Minh City',
-		'Jakarta',
-		'Manila',
-		'Sydney',
-	],
 	[CITY_COLOR.BLUE]: [
 		'San Francisco',
 		'Chicago',
@@ -39,7 +25,7 @@ export const CITY_NAMES_BY_COLOR = {
 		'Milan',
 		'St. Petersburg',
 	],
-	[CITY_COLOR.BLACK]: [
+	[CITY_COLOR.YELLOW]: [
 		'Los Angeles',
 		'Mexico City',
 		'Miami',
@@ -53,7 +39,7 @@ export const CITY_NAMES_BY_COLOR = {
 		'Khartoum',
 		'Johannesburg',
 	],
-	[CITY_COLOR.YELLOW]: [
+	[CITY_COLOR.BLACK]: [
 		'Algiers',
 		'Cairo',
 		'Baghdad',
@@ -66,6 +52,20 @@ export const CITY_NAMES_BY_COLOR = {
 		'Mumbai',
 		'Karachi',
 		'Riyadh',
+	],
+	[CITY_COLOR.RED]: [
+		'Beijing',
+		'Seoul',
+		'Shanghai',
+		'Hong Kong',
+		'Tokyo',
+		'Osaka',
+		'Taipei',
+		'Bangkok',
+		'Ho Chi Minh City',
+		'Jakarta',
+		'Manila',
+		'Sydney',
 	],
 }
 
